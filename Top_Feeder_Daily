@@ -13,8 +13,8 @@ Feeder_Video,
 count(distinct case when Video_Start_Type = "Auto-Play" then Adobe_Tracking_ID else null end) as Unique_Auto_Binge_Accounts,
 count(distinct case when Video_Start_Type = "Clicked-Up-Next" then Adobe_Tracking_ID else null end) as Unique_Click_Next_Accounts,
 count(distinct case when Video_Start_Type in ("Clicked-Up-Next","Auto-Play") then Adobe_Tracking_ID else null end) as Total_Unique_Accounts,
-from `nbcu-ds-sandbox-a-001.Shunchao_Sandbox_Final.Auto_Binge_Metadata_V2`
-where New_Watch_Time > 30 -- filter out the noises
+from `nbcu-ds-sandbox-a-001.Shunchao_Sandbox_Final.Auto_Binge_Metadata_Prod`
+where Final_Watch_Time > 30
 and Adobe_Date = current_date("America/New_York")-1
 and Feeder_Video != "" and Feeder_Video is not null
 and Feeder_Video != "view-all" -- remove epsiode-to-epsiode cases and "View-All
@@ -36,4 +36,4 @@ Unique_Click_Next_Accounts,
 Total_Unique_Accounts
 from rank_set
 where Daily_Ranks <= 50
-order by 1,6 desc
+order by 1,6 desc 
