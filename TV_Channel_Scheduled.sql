@@ -1,4 +1,5 @@
-select 
+
+with cte as (select 
 a.adobe_date,
 EXTRACT(hour from a.Start_Time) as Start_Hour,
 a.adobe_tracking_id,
@@ -24,6 +25,29 @@ and num_seconds_played_no_ads > 0) a
 where 1=1
 and (lower(Channels) LIKE "%-tv%" or Channels like "% | %" 
 or length(Channels) = 4 or (regexp_contains(Channels, r"\w{4}-\w{2}") and length(Channels) <= 7)
-or lower(Channels) in (select distinct lower(string_field_0) from `nbcu-ds-sandbox-a-001.LaluO_Sandbox.affiliate_channels`))
-and lower(Channels) not in ("kane","edge","omos","otis","cnbc","news","imsa","bige","golf")
-group by 1,2,3,4,5
+or lower(Channels) in (select distinct lower(string_field_0) from `nbcu-ds-sandbox-a-001.LaluO_Sandbox.affiliate_channels`)) -- incl all titles from another reference table
+and lower(Channels) not in ("kane","edge","omos","otis","cnbc","news","imsa","bige","golf","reba")
+group by 1,2,3,4,5),
+
+cte1 as (select 
+adobe_date,
+Start_Hour,
+adobe_tracking_id,
+REGEXP_REPLACE(REGEXP_REPLACE(REGEXP_REPLACE(REGEXP_REPLACE(lower(Channels), r"^kntv.*","__TEMP1__"),r"^kxas.*","__TEMP2__"),r"^wbts.*","__TEMP3__"),r"^wmaq.*","__TEMP4__") as Channels,
+Platform,
+Watch_Hours,
+Watch_Minutes
+from cte)
+
+
+select adobe_date,
+Start_Hour,
+adobe_tracking_id,
+REGEXP_REPLACE(REGEXP_REPLACE(REGEXP_REPLACE(REGEXP_REPLACE(Channels, r"__TEMP1__","kntv (kicu)"),r"__TEMP2__","kxas-tv"),r"__TEMP3__","wbts-ld"),r"__TEMP4__","wmaq-tv") as Channels,
+Platform,
+Watch_Hours,
+Watch_Minutes
+from cte1
+
+
+
