@@ -1,3 +1,5 @@
+---this is 30s filter version, which direct to the destination `nbcu-ds-sandbox-a-001.Shunchao_Sandbox_Final.Top_feeders_Metadata`
+
 
 with rank_set as (select 
 Adobe_Date,
