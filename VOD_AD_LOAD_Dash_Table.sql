@@ -1,3 +1,4 @@
+-- the result append to `nbcu-ds-sandbox-a-001.Shunchao_Sandbox.VOD_AD_LOAD_Table_For_Dash`
 
 select 
 adobe_date,
