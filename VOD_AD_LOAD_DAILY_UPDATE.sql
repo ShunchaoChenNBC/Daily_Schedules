@@ -1,3 +1,5 @@
+-- Update to `nbcu-ds-sandbox-a-001.Shunchao_Sandbox.VOD_AD_LOAD_Table` append to it everyday
+
 
 with SV as (select
 adobe_tracking_id,
